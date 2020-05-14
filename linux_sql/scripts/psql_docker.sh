@@ -7,6 +7,8 @@ systemctl status docker || systemctl start docker
 
 container_name=jrvs-psql
 cmd=$1
+user=$2
+pass=$3
 
 if [ "$cmd" = "create" ];
 then
@@ -31,15 +33,16 @@ then
   # create volume
   if [ "$(docker volume ls -f name=${volume_name} | wc -l)" != "2" ];
   then
-    docker volume create volume_name
-    echo "volume created"
+    docker volume create $volume_name
+    echo "volume ${volume_name} is created"
   fi
   # create container
   docker run  --name $container_name \
-              -e POSTGRES_PASSWORD=$3 \
-              -e POSTGRES_USER=$2 \
+              -e POSTGRES_PASSWORD=$pass \
+              -e POSTGRES_USER=$user \
               -d -v ${volume_name}:/var/lib/postgresql/data \
               -p 5432:5432 postgres
+  echo "container ${container_name} is created"
   exit $?
 fi
 
@@ -48,6 +51,10 @@ if [ "$cmd" = "start" ];
 then
 #  echo "in start"
   docker start $container_name
+  if [ $? -eq 0 ];
+  then
+      echo "container ${container_name} is started"
+  fi
   exit $?
 fi
 
@@ -55,6 +62,10 @@ if [ "$cmd" == "stop" ];
 then
 #  echo "in stop"
   docker stop $container_name
+  if [ $? -eq 0 ];
+  then
+      echo "container ${container_name} is stopped"
+  fi
   exit $?
 fi
 # else
