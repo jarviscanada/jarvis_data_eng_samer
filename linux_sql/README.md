@@ -1,4 +1,4 @@
-ntroduction
+#Introduction
 - A **Linux Cluster**: is a connected array of Linux computers or nodes that work together and can be viewed and managed as a single system. Nodes are usually connected by fast LANs, with each node running its own instance of Linux. Nodes may be physical or virtual machines, and they may be separated geographically. Each node includes storage capacity, processing power and I/O bandwidth. Multiple redundant nodes of Linux servers may be connected as a cluster for high availability (HA) and Fault tolerance where each node is capable of failure detection and recovery.
 [Linux Cluster Definition](https://susedefines.suse.com/definition/linux-cluster/)
 - A **Cluster Monitoring Agent**: is an intelligent real-time application that observes the system resources and gathers data from each node of the cluster about hardware specifications and usage perfomance such as CPU utilization, Networking traffic, etc. The collected metrics are stored in a PostgreSQL database hosted locally on a designated node. It performs data analytics using the persisted data to assist in servers load balancing, failure detection and fast recovery, resource management and forecasting.
@@ -14,8 +14,7 @@ ntroduction
 - **host_info** table is defined with data columns: 
 *id, hostname, cpu_number, cpu_architecture, cpu_model, cpu_mhz, L2_cache* timestamp*.
 - **host_usage** table is defined with data columns:
-*timestamp, id, memory_free, cpu_idle, cpu_kernel, disk_io, disk_available*
-- 
+*timestamp, id, memory_free, cpu_idle, cpu_kernel, disk_io, disk_available*- 
 ## Usage
 
 | BASH FILE | COMMANDs |
