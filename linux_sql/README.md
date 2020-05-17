@@ -58,7 +58,7 @@
   - Edit crontab: 
 `crontab -e`
   - Add this line to crontab file:
-`\* \* \* \* \* /home/centos/dev/jarvis_data_eng_myname/linux_sql/scripts/host_usage.sh localhost 5432 postgres centos password`
+`* * * * * /home/centos/dev/jarvis_data_eng_myname/linux_sql/scripts/host_usage.sh localhost 5432 postgres centos password`
 
 6. Run some queries:
   - Execute queries.sql: 
