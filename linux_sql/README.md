@@ -12,7 +12,7 @@
 - The `host_usage` script is scheduled by a Linux **crontab** job to be executed every minute.
 - The PSQL node executes a bash script `psql_docker.sh` that creates, starts or stops the PostgreSQL server container.
 - Another bash script `ddl.sql` on the PSQL node defines the database schema, and creates PostgreSQL database along with host_info and host_usage tables.
--Table **host_info** is defined with data columns: 
+- Table **host_info** is defined with data columns: 
 *id, hostname, cpu_number, cpu_architecture, cpu_model, cpu_mhz, L2_cache, timestamp*.
 - Table **host_usage** is defined with data columns:
 *timestamp, host_id, memory_free, cpu_idle, cpu_kernel, disk_io, disk_available*
