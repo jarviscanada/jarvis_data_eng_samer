@@ -38,16 +38,16 @@ id_query="
 	FROM host_info 
 	WHERE hostname='$hostname'"
 
-#execute id query
+#execute host_id query
 export PGPASSWORD=$psql_pass
-id=`psql -h $psql_host -p $psql_port -d $db_name -U $psql_user -t -c "$id_query"`
+host_id=`psql -h $psql_host -p $psql_port -d $db_name -U $psql_user -t -c "$id_query"`
 
 # construct insert query
 insert_query="
 	INSERT INTO host_usage
-       	(id, hostname, timestamp, memory_free, cpu_idle, cpu_kernel, disk_io, disk_available) 
+       	(host_id, hostname, timestamp, memory_free, cpu_idle, cpu_kernel, disk_io, disk_available) 
        	VALUES 
-       	('$id', '"$hostname"', '"$timestamp"', $memory_free, $cpu_idle, $cpu_kernel, $disk_io, $disk_available);"
+       	('$host_id', '"$hostname"', '"$timestamp"', $memory_free, $cpu_idle, $cpu_kernel, $disk_io, $disk_available);"
 
 # execute insert query
 psql -h $psql_host -p $psql_port -d $db_name -U $psql_user -c "$insert_query"

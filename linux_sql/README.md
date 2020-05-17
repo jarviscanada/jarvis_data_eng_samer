@@ -1,4 +1,4 @@
-# Monitoring Agent :telescope:
+# :microscope: Cluster Monitoring Agent :telescope:
 ## Introduction
 - A **Linux Cluster**: is a connected array of Linux computers or nodes that work together and can be viewed and managed as a single system. Nodes are usually connected by fast LANs, with each node running its own instance of Linux. Nodes may be physical or virtual machines, and they may be separated geographically. Each node includes storage capacity, processing power and I/O bandwidth. Multiple redundant nodes of Linux servers may be connected as a cluster for high availability (HA) and Fault tolerance where each node is capable of failure detection and recovery.
 [Linux Cluster Definition](https://susedefines.suse.com/definition/linux-cluster/)
@@ -15,7 +15,7 @@
 - **host_info** table is defined with data columns: 
 *id, hostname, cpu_number, cpu_architecture, cpu_model, cpu_mhz, L2_cache, timestamp*.
 - **host_usage** table is defined with data columns:
-*timestamp, host_id, memory_free, cpu_idle, cpu_kernel, disk_io, disk_available*-
+*timestamp, host_id, memory_free, cpu_idle, cpu_kernel, disk_io, disk_available*
 ## Usage
 
 | BASH FILE | COMMANDs |
@@ -24,9 +24,45 @@
 |                  | psql_docker.sh stop |
 |                  | psql_docker.sh create [DB_USERNAME][DB_PASSWORD]
 | `ddl.sql` | psql -h [HOSTNAME] -U [HOST_AGENT] -d  [DB_NAME] -f ddl.sql |
-| `queries.sql` | psql -h [HOSTNAME] -p [port number] -U [username] -c "queries.sql" |
 | `host_info.sh` | host_info.sh [PSQL_HOST] [PSQL_PORT] [DB_NAME] [PSQL_USER ] [PSQL_PASSWORD] |
 | `host_usage.sh` | host_usage.sh  [PSQL_HOST] [PSQL_PORT] [DB_NAME] [PSQL_USER ] [PSQL_PASSWORD]|
+| `queries.sql` | psql -h [HOSTNAME] -p [port number] -U [username] -c "queries.sql" |
+
+
+### Steps
+1. Provision a psql instance using docker
+- Create container with name *jrvs-psql*, db_name *postgres*, volume *pgdata*, db_username *centos* and db_password *password*by executing:
+`./psql_docker.sh create centos password`
+- Check docker was created and running:
+`docker ps -l`      or      `docker ps -f name=jrvs-psql`
+- Check volume was created:
+`docker volume ls`
+
+2. Create tables *host_info* and *host_usage* in *database postgres*
+- Execute ddl.sql script on the host_agent database against the psql instance:
+`psql -h localhost -U centos -d postgres -f ddl.sql`
+
+3. Connect to database *postgres* and check tables were created
+- Connect
+`psql -h localhost -p 5432 -U centos -W postgres`
+- List tables
+`\dt`
+
+4. Collect host info and usage data
+- Execute host_info.sh to collect host hardware specification data and insert it in *host_info* table
+`./host_info.sh localhost 5432 postgres centos password`
+- Execute host_usage.sh to collect server usage data and insert it in *host_usage* table  
+`./host_info.sh localhost 5432 postgres centos password`
+
+5. Schedule execution of host_usage.sh every minute by crontab
+- Edit crontab 
+`crontab -e`
+- Add this line to crontab file
+* * * * * /home/centos/dev/jarvis_data_eng_myname/linux_sql/scripts/host_usage.sh localhost 5432 postgres centos password
+
+6. Run some queries:
+- Execute queries.sql
+`psql -h localhost -U centos -d postgres -f queries.sql`
 
 ## Improvements
 1. Add more fields to the tables in the database.
