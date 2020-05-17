@@ -18,7 +18,7 @@
 *timestamp, host_id, memory_free, cpu_idle, cpu_kernel, disk_io, disk_available*
 ## Usage
 
-| BASH FILE | COMMANDs |
+| BASH FILE | COMMAND |
 | --------- | ------- |
 | `psql_docker.sh` | psql_docker.sh start |
 |                  | psql_docker.sh stop |
@@ -31,37 +31,37 @@
 
 ### Steps
 1. Provision a psql instance using docker
- - Create container with name *jrvs-psql*, db_name *postgres*, volume *pgdata*, db_username *centos* and db_password *password*by executing: 
+  - Create container with name *jrvs-psql*, db_name *postgres*, volume *pgdata*, db_username *centos* and db_password *password*by executing: 
 `./psql_docker.sh create centos password`
- - Check docker was created and running: 
+  - Check docker was created and running: 
 `docker ps -l`      or      `docker ps -f name=jrvs-psql`
- - Check volume was created: 
+  - Check volume was created: 
 `docker volume ls`
 
 2. Create tables *host_info* and *host_usage* in database *postgres*
- - Execute ddl.sql script on the host_agent database against the psql instance: 
+  - Execute ddl.sql script on the host_agent database against the psql instance: 
 `psql -h localhost -U centos -d postgres -f ddl.sql`
 
 3. Connect to database *postgres* and check tables were created
- - Connect: 
+  - Connect: 
 `psql -h localhost -p 5432 -U centos -W postgres`
- - List tables: 
+  - List tables: 
 `\dt`
 
 4. Collect host info and usage data
- - Execute host_info.sh to collect host hardware specification data and insert it in *host_info* table: 
+  - Execute host_info.sh to collect host hardware specification data and insert it in *host_info* table: 
 `./host_info.sh localhost 5432 postgres centos password`
- - Execute host_usage.sh to collect server usage data and insert it in *host_usage* table: 
+  - Execute host_usage.sh to collect server usage data and insert it in *host_usage* table: 
 `./host_info.sh localhost 5432 postgres centos password`
 
 5. Schedule execution of host_usage.sh every minute by crontab
- - Edit crontab: 
+  - Edit crontab: 
 `crontab -e`
- - Add this line to crontab file:
-\* \* \* \* \* /home/centos/dev/jarvis_data_eng_myname/linux_sql/scripts/host_usage.sh localhost 5432 postgres centos password
+  - Add this line to crontab file:
+`\* \* \* \* \* /home/centos/dev/jarvis_data_eng_myname/linux_sql/scripts/host_usage.sh localhost 5432 postgres centos password`
 
 6. Run some queries:
- - Execute queries.sql: 
+  - Execute queries.sql: 
 `psql -h localhost -U centos -d postgres -f queries.sql`
 
 ## Improvements
