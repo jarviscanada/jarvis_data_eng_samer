@@ -1,3 +1,4 @@
+<p style="text-align: center;"> <h1>Monitoring Agent</h1> </p>
 ## Introduction
 - A **Linux Cluster**: is a connected array of Linux computers or nodes that work together and can be viewed and managed as a single system. Nodes are usually connected by fast LANs, with each node running its own instance of Linux. Nodes may be physical or virtual machines, and they may be separated geographically. Each node includes storage capacity, processing power and I/O bandwidth. Multiple redundant nodes of Linux servers may be connected as a cluster for high availability (HA) and Fault tolerance where each node is capable of failure detection and recovery.
 [Linux Cluster Definition](https://susedefines.suse.com/definition/linux-cluster/)
@@ -12,9 +13,9 @@
 - The PSQL node executes a bash script `psql_docker.sh` that creates, starts or stops the PostgreSQL server container.
 - Another bash script `ddl.sql` on the PSQL node defines the database schema, and creates PostgreSQL database along with host_info and host_usage tables.
 - **host_info** table is defined with data columns: 
-*id, hostname, cpu_number, cpu_architecture, cpu_model, cpu_mhz, L2_cache* timestamp*.
+*id, hostname, cpu_number, cpu_architecture, cpu_model, cpu_mhz, L2_cache, timestamp*.
 - **host_usage** table is defined with data columns:
-*timestamp, id, memory_free, cpu_idle, cpu_kernel, disk_io, disk_available*- 
+*timestamp, host_id, memory_free, cpu_idle, cpu_kernel, disk_io, disk_available*-
 ## Usage
 
 | BASH FILE | COMMANDs |
@@ -28,6 +29,6 @@
 | `host_usage.sh` | host_usage.sh  [PSQL_HOST] [PSQL_PORT] [DB_NAME] [PSQL_USER ] [PSQL_PASSWORD]|
 
 ## Improvements
-1. Add and collect more fields to the tables in the database.
+1. Add more fields to the tables in the database.
 2. Create more queries.
-3. Clean up old data script.
+3. Run a script to Clean up old data.
